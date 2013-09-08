@@ -1,8 +1,4 @@
 /**
- * Module dependencies
- */
-
-/**
  * Module exports
  */
 
@@ -14,6 +10,7 @@ exports = module.exports = override;
 
 function override(key) {
   key = key || "_method";
+
   return function(next){
     return function*(){
       var body = yield this.parseUrlencoded;
