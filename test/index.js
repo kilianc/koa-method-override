@@ -13,7 +13,7 @@ describe('method override', function() {
 
     app.use(function(next) {
       return function * () {
-        assert(this.method === "PUT");
+        assert(this.method === "put");
         done();
       };
     });
@@ -37,7 +37,7 @@ describe('method override', function() {
 
     app.use(function(next) {
       return function * () {
-        assert(this.method === "PATCH");
+        assert(this.method === "patch");
         done();
       };
     });
