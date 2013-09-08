@@ -31,6 +31,12 @@ NPM:
 npm install koa-method-override
 ```
 
+## Dependencies
+
+* [koa-body-parser](https://github.com/jonathanong/koa-body-parser)
+
+**Note:** You need to include the body parser's context __before__ the method override.
+
 ## Usage
 
 ```js
@@ -38,6 +44,9 @@ var methodOverride = require("koa-method-override");
 
 var koa = require('koa');
 var app = koa();
+
+// Include the body parser context
+app.context(require('koa-body-parser'));
 
 // Use the middleware.
 app.use(methodOverride());
