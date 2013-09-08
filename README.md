@@ -1,5 +1,7 @@
 # Koa Method Override
 
+### Overview
+
 Method override middleware for Koa. It supports two override methods:
 
 * Form
@@ -21,7 +23,7 @@ The `name` field is defaulted to `_method`. You can customize this.
 It checks if the HTTP header `X-HTTP-Method-Override` exists.
 
 
-**Install:**
+## Install
 
 NPM:
 
@@ -29,7 +31,7 @@ NPM:
 npm install koa-method-override
 ```
 
-**Usage:**
+## Usage
 
 ```js
 var methodOverride = require("koa-method-override");
