@@ -3,19 +3,19 @@
   "version": "0.0.1",
   "description": "Method override middleware for Koa",
   "main": "index.js",
-  "dependencies": {
-    "koa-body-parser": "git://github.com/jonathanong/koa-body-parser.git"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "*",
-    "koa": "*",
-    "request": "*"
+    "request": "~2.30.0",
+    "koa-mount": "~1.2.2",
+    "koa": "~0.1.2",
+    "chai": "~1.8.1",
+    "mocha": "~1.16.2"
   },
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "middleware"
   ],
   "author": "Daniel Fagnan <dnfagnan@gmail.com>",
+  "contributors": "Kilian Ciuffolo <me@nailik.org>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/TheHydroImpulse/koa-method-override/issues"

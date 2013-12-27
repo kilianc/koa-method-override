@@ -1,30 +1,26 @@
 /**
- * Module exports
+ * Middleware: overrides HTTP methods
+ * based on connect method-override
  */
 
-exports = module.exports = override;
+module.exports = function (key) {
+  key = key || "_method"
+  return function *override(next) {
+    this.originalMethod = this.originalMethod || this.method
 
-/**
- * Override
- */
+    if (key in this.query) {
+      this.method = this.query[key].toLowerCase()
+      delete this.query[key]
+    }
 
-function override(key) {
-  key = key || "_method";
+    // check X-HTTP-Method-Override
+    if (this.header['x-http-method-override']) {
+      this.method = this.header['x-http-method-override'].toLowerCase()
+    }
 
-  return function(next){
-    return function*(){
-      var body = yield this.parseUrlencoded;
+    // replace
+    this.method = this.method.toUpperCase()
 
-      if (body && body[key]) {
-        this.originalMethod = this.method;
-        this.method = body[key].toLowerCase();
-      }
-
-      if (this.req.headers['x-http-method-override']) {
-        this.method = this.req.headers['x-http-method-override'].toLowerCase();
-      }
-
-      return yield next;
-    };
-  };
+    yield next
+  }
 }

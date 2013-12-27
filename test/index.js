@@ -1,56 +1,33 @@
-var assert = require('assert');
-var koa = require('koa');
-var request = require('request');
-var bodyParser = require('koa-body-parser');
-var methodOverride = require('..');
+var assert = require('chai').assert
+  , get = require('request').defaults({ json: true }).get
+  , app = require('koa')()
+  , mount = require('koa-mount')
+  , override = require('../')
 
-describe('method override', function() {
+describe('override()', function () {
+  before(function (done) {
+    app.use(override('m'))
+    app.use(mount('/test', function *() {
+      this.body = this.method
+    }))
+    app.listen(3000, done)
+  })
 
-  it('should override post method with put', function(done) {
-    var app = koa();
-    app.context(bodyParser);
-    app.use(methodOverride());
+  it('should override method / querystring', function (done) {
+    get('http://localhost:3000/test?m=put', function (err, res, body) {
+      if (err) done(err)
+      assert.equal(body, 'PUT')
+      done()
+    })
+  })
 
-    app.use(function(next) {
-      return function * () {
-        assert(this.method === "put");
-        done();
-      };
-    });
-
-    request.post('http://localhost:9090', {
-      form: {
-        _method: 'PUT'
-      }
-    }, function(error, response, body) {
-
-    });
-
-
-    app.listen(9090);
-  });
-
-  it('should override post method with patch', function(done) {
-    var app = koa();
-    app.context(bodyParser);
-    app.use(methodOverride());
-
-    app.use(function(next) {
-      return function * () {
-        assert(this.method === "patch");
-        done();
-      };
-    });
-
-    request.post('http://localhost:9091', {
-      form: {
-        _method: 'PATCH'
-      }
-    }, function(error, response, body) {
-
-    });
-
-    app.listen(9091);
-  });
-
-});
+  it('should override method / x-http-method-override', function (done) {
+    get('http://localhost:3000/test?m=put', {
+      headers: { 'x-http-method-override': 'DELETE' }
+    }, function (err, res, body) {
+      if (err) done(err)
+      assert.equal(body, 'DELETE')
+      done()
+    })
+  })
+})
